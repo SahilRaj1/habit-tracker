@@ -8,8 +8,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sahil.habit.model.Habit;
+import com.sahil.habit.dto.request.HabitRequestDTO;
+import com.sahil.habit.dto.response.HabitResponseDTO;
+import com.sahil.habit.dto.update.HabitUpdateDTO;
 import com.sahil.habit.service.HabitService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,33 +31,42 @@ public class HabitController {
     private HabitService service;
 
     @GetMapping
-    public ResponseEntity<List<Habit>> getAllHabits() {
-        List<Habit> habits = service.getAllHabits();
-        return new ResponseEntity<>(habits, HttpStatus.OK);
+    public ResponseEntity<?> getAllHabits() {
+        List<HabitResponseDTO> habits = service.getAllHabits();
+        return ResponseEntity.ok(habits);
     }
 
     @PostMapping
-    public ResponseEntity<Habit> addHabit(@RequestBody Habit newHabit) {
-        Habit savedHabit = service.addHabit(newHabit);
-        return new ResponseEntity<>(savedHabit, HttpStatus.CREATED);
+    public ResponseEntity<?> addHabit(@Valid @RequestBody HabitRequestDTO newHabit) {
+        HabitResponseDTO savedHabit = service.addHabit(newHabit);
+        return ResponseEntity.ok(savedHabit);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Habit> getOneHabit(@PathVariable String id) {
-        Habit habit = service.findHabitById(id);
-        return new ResponseEntity<>(habit, HttpStatus.OK);
+    public ResponseEntity<?> getOneHabit(@PathVariable String id) {
+        HabitResponseDTO habit = service.findHabitById(id);
+        if (habit == null) {
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok(habit);
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<Habit> updateHabit(@PathVariable String id, @RequestBody Habit habit) {
-        Habit savedHabit = service.updateHabitById(id, habit);
-        return new ResponseEntity<>(savedHabit, HttpStatus.ACCEPTED);
+    public ResponseEntity<?> updateHabit(@PathVariable String id, @Valid @RequestBody HabitUpdateDTO habit) {
+        HabitResponseDTO savedHabit = service.updateHabitById(id, habit);
+        if (savedHabit == null) {
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok(savedHabit);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Habit> deleteHabit(@PathVariable String id) {
-        service.deleteHabitById(id);
-        return new ResponseEntity<>(null, HttpStatus.OK);
+    public ResponseEntity<?> deleteHabit(@PathVariable String id) {
+        HabitResponseDTO deletedHabit = service.deleteHabitById(id);
+        if (deletedHabit == null) {
+            return (ResponseEntity<?>) ResponseEntity.notFound();
+        }
+        return ResponseEntity.ok(deletedHabit);
     }
 
 }

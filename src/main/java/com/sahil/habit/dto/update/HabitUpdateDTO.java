@@ -1,6 +1,5 @@
 package com.sahil.habit.dto.update;
 
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,11 +19,7 @@ public class HabitUpdateDTO {
 
     @Builder.Default
     private Optional<String> category = Optional.empty();
-    
-    @Builder.Default
-    @Min(value = 1, message = "Frequency must be at least 1")
-    private Optional<Integer> frequency = Optional.empty();
-    
+
     @Builder.Default
     private Optional<List<Integer>> days = Optional.empty();
     

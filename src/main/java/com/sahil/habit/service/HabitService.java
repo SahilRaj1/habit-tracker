@@ -31,12 +31,17 @@ public class HabitService {
 
     public HabitResponseDTO addHabit(HabitRequestDTO newHabit) {
         Habit savedHabit = repo.save(HabitMapper.toHabit(newHabit));
+        int frequency = savedHabit.getDays().size();
+        savedHabit.setFrequency(frequency);
         return HabitMapper.toHabitResponseDTO(savedHabit);
     }
 
     public HabitResponseDTO findHabitById(String id) {
-        HabitResponseDTO habit = HabitMapper.toHabitResponseDTO(repo.findById(new ObjectId(id)).orElse(null));
-        return habit;
+        Habit foundHabit = repo.findById(new ObjectId(id)).orElse(null);
+        if (foundHabit == null) {
+            return null;
+        }
+        return HabitMapper.toHabitResponseDTO(foundHabit);
     }
 
     public HabitResponseDTO updateHabitById(String id, HabitUpdateDTO habit) {
@@ -47,8 +52,10 @@ public class HabitService {
 
         habit.getName().ifPresent(foundHabit::setName);
         habit.getCategory().ifPresent(foundHabit::setCategory);
-        habit.getFrequency().ifPresent(foundHabit::setFrequency);
-        habit.getDays().ifPresent(foundHabit::setDays);
+        habit.getDays().ifPresent(days -> {
+            foundHabit.setDays(days);
+            foundHabit.setFrequency(days.size());
+        });
         habit.getReminderTime().ifPresent(foundHabit::setReminderTime);
 
         HabitResponseDTO updatedHabit = HabitMapper.toHabitResponseDTO(repo.save(foundHabit));

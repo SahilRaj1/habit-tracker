@@ -15,7 +15,6 @@ public class HabitMapper {
             .userId(dto.getUserId())
             .name(dto.getName())
             .category(dto.getCategory())
-            .frequency(dto.getFrequency())
             .days(dto.getDays())
             .reminderTime(dto.getReminderTime())
             .streak(new Streak(0, 0, null))

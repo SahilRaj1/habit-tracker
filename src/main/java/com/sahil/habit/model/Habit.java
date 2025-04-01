@@ -20,17 +20,27 @@ import lombok.NoArgsConstructor;
 @Builder
 @Document(collection = "habits")
 public class Habit {
+
     @Id
     private ObjectId id;
+
     private String userId;
+
     private String name;
+
     private String category;
+
     private int frequency;
+
     private List<Integer> days;
+
     private String reminderTime;
+    
     private Streak streak;
+
     @CreatedDate
     private LocalDate createdAt;
+
     @LastModifiedDate
     private LocalDate updatedAt;
 }

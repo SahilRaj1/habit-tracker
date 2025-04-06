@@ -7,7 +7,10 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.mongodb.lang.NonNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,10 +27,13 @@ public class Habit {
     @Id
     private ObjectId id;
 
-    private String userId;
+    @DBRef(db = "users")
+    private ObjectId userId;
 
+    @NonNull
     private String name;
 
+    @NonNull
     private String category;
 
     private int frequency;
@@ -35,7 +41,7 @@ public class Habit {
     private List<Integer> days;
 
     private String reminderTime;
-    
+
     private Streak streak;
 
     @CreatedDate

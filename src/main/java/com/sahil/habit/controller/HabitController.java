@@ -35,13 +35,13 @@ public class HabitController {
     @GetMapping
     public ResponseEntity<?> getAllHabits() {
         List<HabitResponseDTO> habits = service.getAllHabits();
-        return ResponseEntity.ok(ApiResponse.success(habits, "Habits fetched successfully", 200, habits.size()));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(habits, "Habits fetched successfully", 200, habits.size()));
     }
 
     @PostMapping
     public ResponseEntity<?> addHabit(@Valid @RequestBody HabitRequestDTO newHabit) {
         HabitResponseDTO savedHabit = service.addHabit(newHabit);
-        return ResponseEntity.ok(ApiResponse.success(savedHabit, "Habit added successfully", 200, 1));
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success(savedHabit, "Habit added successfully", 200, 1));
     }
 
     @GetMapping("/{id}")
@@ -50,7 +50,8 @@ public class HabitController {
         if (habit == null) {
             return new ResponseEntity<>(ApiError.error("Habit not found", 404), HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(ApiResponse.success(habit, "Habit added successfully", 200, 1));
+        
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(habit, "Habit added successfully", 200, 1));
     }
     
     @PatchMapping("/{id}")
@@ -59,7 +60,7 @@ public class HabitController {
         if (savedHabit == null) {
             return new ResponseEntity<>(ApiError.error("Habit not found", 404), HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(ApiResponse.success(savedHabit, "Habit added successfully", 200, 1));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(savedHabit, "Habit added successfully", 200, 1));
     }
 
     @DeleteMapping("/{id}")
@@ -68,7 +69,7 @@ public class HabitController {
         if (deletedHabit == null) {
             return new ResponseEntity<>(ApiError.error("Habit not found", 404), HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(ApiResponse.success(deletedHabit, "Habit added successfully", 200, 1));
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.success(deletedHabit, "Habit added successfully", 200, 1));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.sahil.habit.mapper;
 
+import org.bson.types.ObjectId;
 import org.springframework.stereotype.Component;
 
 import com.sahil.habit.dto.request.HabitRequestDTO;
@@ -12,7 +13,7 @@ public class HabitMapper {
 
     public static Habit toHabit(HabitRequestDTO dto) {
         return Habit.builder()
-            .userId(dto.getUserId())
+            .userId(new ObjectId(dto.getUserId()))
             .name(dto.getName())
             .category(dto.getCategory())
             .days(dto.getDays())
@@ -24,7 +25,7 @@ public class HabitMapper {
     public static HabitResponseDTO toHabitResponseDTO(Habit habit) {
         return HabitResponseDTO.builder()
             .id(habit.getId().toString())
-            .userId(habit.getUserId())
+            .userId(habit.getUserId().toString())
             .name(habit.getName())
             .category(habit.getCategory())
             .frequency(habit.getFrequency())

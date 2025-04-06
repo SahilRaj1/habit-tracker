@@ -1,7 +1,6 @@
 package com.sahil.habit.model;
 
-import java.time.LocalDateTime;
-import java.util.Set;
+import java.time.LocalDate;
 
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.CreatedDate;
@@ -9,6 +8,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import com.mongodb.lang.NonNull;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -31,17 +32,18 @@ public class User {
     @Indexed(unique = true)
     private String phoneNumber;
 
+    @NonNull
     private String fullName;
-    
-    private String password;
-    
-    private Set<String> roles;
 
-    private boolean isActive;
+    @NonNull
+    private String password;
+
+    @Builder.Default
+    private boolean isActive = true;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDate createdAt;
 
     @LastModifiedDate
-    private LocalDateTime updatedAt;
+    private LocalDate updatedAt;
 }
